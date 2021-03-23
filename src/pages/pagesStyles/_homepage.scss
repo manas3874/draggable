@@ -1,12 +1,13 @@
 .homepage {
-  display: flex;
+  display: grid;
+  grid-template-columns: 4fr 1fr;
   height: 100vh;
   &__workspace {
     background-color: lightgrey;
-    width: 80vw;
+    // width: 80vw;
   }
   &__sidebar {
-    width: 20vw;
+    // width: 20vw;
     background-color: lightblue;
     &--container {
       position: relative;

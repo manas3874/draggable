@@ -1,6 +1,7 @@
 .configuration-modal {
   &-wrapper {
-
   }
-
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
