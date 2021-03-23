@@ -1,0 +1,28 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+html {
+  font-size: 10px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+p,
+button,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+// $fancy-font: "Merienda One", cursive;
+// $main-font: "Roboto", sans-serif;
+// body {
+//   font-family: $main-font;
+// }

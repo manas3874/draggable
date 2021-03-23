@@ -1,0 +1,28 @@
+.homepage {
+  display: flex;
+  height: 100vh;
+  &__workspace {
+    background-color: lightgrey;
+    width: 80vw;
+  }
+  &__sidebar {
+    width: 20vw;
+    background-color: lightblue;
+    &--container {
+      position: relative;
+      .drag {
+        position: absolute;
+        left: 2rem;
+      }
+      .drag-label {
+        top: 0;
+      }
+      .drag-input {
+        top: 7rem;
+      }
+      .drag-button {
+        top: 14rem;
+      }
+    }
+  }
+}
