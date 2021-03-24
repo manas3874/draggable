@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import Homepage from "./pages/Homepage";
 import "./pages/pagesStyles/app.scss";
 const App = () => {

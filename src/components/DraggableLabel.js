@@ -9,6 +9,11 @@ gsap.registerPlugin(Draggable);
 const FadingBackground = styled(BaseModalBackground)`
   opacity: ${(props) => props.opacity};
   transition: all 0.3s ease-in-out;
+  position: fixed !important;
+  top: 0px !important;
+  left: 0px !important;
+  width: 100vw !important;
+  z-index: 100;
 `;
 
 const StyledModal = Modal.styled`
@@ -23,6 +28,7 @@ const StyledModal = Modal.styled`
   box-shadow:0px 0px 10px rgba(0,0,0,0.6);
   border-radius:10px;
   padding:20px 20px;
+  z-index: 100;
   `;
 
 function DraggableLabel(props) {
@@ -68,7 +74,7 @@ function DraggableLabel(props) {
   useEffect(() => {
     // console.log(elementPos);
     Draggable.create(dragRef.current, {
-      onDragEnd: () => {
+      onDragEnd: function (ev) {
         setBound(props.boundRef.current);
         setLabelClass("drag drag-label--dropped");
         const elementPos = dragRef.current.getBoundingClientRect();
@@ -77,6 +83,9 @@ function DraggableLabel(props) {
           x: Math.round(elementPosition.x),
           y: Math.round(elementPosition.y),
         });
+        if (this.hitTest(props.bin.current, "30%")) {
+          dragRef.current.style.display = "none";
+        }
       },
       onPress: () => {
         setBorderClass("red-border");

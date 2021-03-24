@@ -4,6 +4,7 @@
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.4);
   margin: 2rem 0;
   border-radius: 0.5rem;
+  z-index: 1;
   // ! Label styles ***************************
   &-label {
     background-color: purple;
@@ -147,7 +148,7 @@
     }
   }
   &-image {
-    background-color: magenta;
+    background-color: rgb(3, 220, 248);
     position: relative;
     cursor: move;
     &::after {
@@ -178,8 +179,13 @@
       box-shadow: none;
       height: max-content;
       width: max-content;
-      img {
+      img.drag-dots {
         display: none;
+      }
+      img.content-image {
+        display: block;
+        width: 20rem;
+        box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.4);
       }
       .btn {
         box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.4);
@@ -187,6 +193,31 @@
         background-color: blanchedalmond;
         border-radius: 0.5rem;
       }
+    }
+  }
+}
+input[type="file"] {
+  transform: translateX(3rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &:focus,
+  &:active {
+    border: none;
+    outline: none;
+  }
+  &::file-selector-button,
+  &::-webkit-file-upload-button {
+    border: none;
+    background-color: blueviolet;
+    padding: 0.5rem 2rem;
+    border-radius: 10rem;
+    cursor: pointer;
+    color: #fff;
+    &:focus,
+    &:active {
+      border: none;
+      outline: none;
     }
   }
 }

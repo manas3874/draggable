@@ -8,6 +8,10 @@ gsap.registerPlugin(Draggable);
 const FadingBackground = styled(BaseModalBackground)`
   opacity: ${(props) => props.opacity};
   transition: all 0.3s ease-in-out;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
 `;
 
 const StyledModal = Modal.styled`
@@ -56,7 +60,7 @@ function DraggableButton(props) {
   };
   useEffect(() => {
     const elementPos = dragRef.current.getBoundingClientRect();
-    console.log("for button", elementPos);
+    // console.log("for button", elementPos);
     Draggable.create(dragRef.current, {
       onDragEnd: async () => {
         await setBound(props.boundRef.current);
@@ -73,7 +77,7 @@ function DraggableButton(props) {
   // ! effect for bound change
   useEffect(() => {
     Draggable.create(dragRef.current, {
-      onDragEnd: () => {
+      onDragEnd: function () {
         setBound(props.boundRef.current);
         setButtonClass("drag drag-button--dropped");
         const elementPos = dragRef.current.getBoundingClientRect();
@@ -86,6 +90,9 @@ function DraggableButton(props) {
         if (firstSet) {
           setFirstSet(false);
           shiftTag();
+        }
+        if (this.hitTest(props.bin.current, "30%")) {
+          dragRef.current.style.display = "none";
         }
       },
       onPress: () => {

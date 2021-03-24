@@ -3,12 +3,29 @@ import DraggableLabel from "../components/DraggableLabel";
 import DraggableInput from "../components/DraggableInput";
 import DraggableButton from "../components/DraggableButton";
 import DraggableImage from "../components/DraggableImage";
-
+import darkToggle from "../assets/dark-mode.svg";
+import trash from "../assets/trash.svg";
+// ! Provision for sliding sidebar (commented)
+// import { gsap } from "gsap";
+// import { Draggable } from "gsap/Draggable";
+// gsap.registerPlugin(Draggable);
 function Homepage() {
   const workspaceRef = useRef(null);
+  const sidebarRef = useRef(null);
+  const binRef = useRef(null);
+  // const dotsRef = useRef(null);
+  // const [sidebarOpen, setSidebarOpen] = useState(true);
+  // const [close, setClose] = useState(null);
+  // const [open, setOpen] = useState(null);
+  // ! tag limit
   const [tagLimit, setTagLimit] = useState(3);
   // ! workspace bounds state
   const [workspace, setWorkspace] = useState({ x: 0, y: 0 });
+  // ! Dark mode/ light mode
+  const [mode, setMode] = useState(false);
+  const [workspaceClass, setWorkspaceClass] = useState(
+    "homepage__workspace--light"
+  );
   // ! Generating the usable labels
   const setLabels = () => {
     var dummyArr = [];
@@ -18,6 +35,7 @@ function Homepage() {
           index={tagLimit - i}
           boundRef={workspaceRef}
           bounds={workspace}
+          bin={binRef}
         />
       );
     }
@@ -32,6 +50,7 @@ function Homepage() {
           index={tagLimit - i}
           boundRef={workspaceRef}
           bounds={workspace}
+          bin={binRef}
         />
       );
     }
@@ -46,6 +65,7 @@ function Homepage() {
           index={tagLimit - i}
           boundRef={workspaceRef}
           bounds={workspace}
+          bin={binRef}
         />
       );
     }
@@ -60,27 +80,75 @@ function Homepage() {
           index={tagLimit - i}
           boundRef={workspaceRef}
           bounds={workspace}
+          bin={binRef}
         />
       );
     }
     return dummyArr;
   };
+  // var closeFunc, openFunc;
   useEffect(() => {
     const workspaceBounds = workspaceRef.current.getBoundingClientRect();
+    const sidebarBounds = sidebarRef.current.getBoundingClientRect();
     setWorkspace({
       x: workspaceBounds.width,
       y: workspaceBounds.height,
     });
-    // console.log(workspaceBounds);
+    binRef.current.style.transform = `translateX(-${sidebarBounds.width}px)`;
+    // closeFunc = gsap.to(sidebarRef.current, {
+    //   x: `+=${sidebarBounds.width - 60}`,
+    //   paused: true,
+    //   duration: 1,
+    // });
+    // openFunc = gsap.to(sidebarRef.current, {
+    //   x: `-=${sidebarBounds.width - 60}`,
+    //   paused: true,
+    //   duration: 1,
+    // });
+    // setClose(closeFunc);
+    // setOpen(openFunc);
   }, []);
   return (
     <div className="homepage">
-      <div className="homepage__workspace" ref={workspaceRef}></div>
-      <div className="homepage__sidebar">
+      <div className={workspaceClass} ref={workspaceRef}>
+        <img
+          src={darkToggle}
+          className="toggle-dark-mode"
+          alt="toggle dark mode"
+          onClick={() => {
+            if (!mode) {
+              setWorkspaceClass("homepage__workspace--dark");
+            } else {
+              setWorkspaceClass("homepage__workspace--light");
+            }
+            setMode(!mode);
+          }}
+        />
+        <div className="bin" ref={binRef}>
+          <img src={trash} alt="" />
+        </div>
+        
+      </div>
+      <div className="homepage__sidebar" ref={sidebarRef}>
         <div className="homepage__sidebar--container">{setLabels()}</div>
         <div className="homepage__sidebar--container">{setInputs()}</div>
         <div className="homepage__sidebar--container">{setButtons()}</div>
         <div className="homepage__sidebar--container">{setImages()}</div>
+        {/* <div
+          className="sidebar-toggle"
+          ref={dotsRef}
+          onClick={() => {
+            if (sidebarOpen) {
+              close.play();
+              close.restart();
+            } else {
+              open.play();
+              open.restart();
+            }
+
+            setSidebarOpen(!sidebarOpen);
+          }}
+        ></div> */}
       </div>
     </div>
   );

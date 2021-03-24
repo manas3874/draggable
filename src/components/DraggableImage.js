@@ -4,11 +4,15 @@ import { Draggable } from "gsap/Draggable";
 import styled from "styled-components";
 import Modal, { ModalProvider, BaseModalBackground } from "styled-react-modal";
 import dots from "../assets/draggable-dots.svg";
-// import { BlockPicker } from "react-color";
+import dummyImage from "../assets/dummy.PNG";
 gsap.registerPlugin(Draggable);
 const FadingBackground = styled(BaseModalBackground)`
   opacity: ${(props) => props.opacity};
   transition: all 0.3s ease-in-out;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
 `;
 
 const StyledModal = Modal.styled`
@@ -43,23 +47,24 @@ function DraggableImage(props) {
   // ! state for dimensions of the drag component
   const [drag, setDrag] = useState({ x: 0, y: 0 });
   // ! Classname setting for dropping
-  const [labelClass, setLabelClass] = useState("drag drag-image");
+  const [imageClass, setImageClass] = useState("drag drag-image");
   const [borderClass, setBorderClass] = useState("no-border");
-  // ! State to manage the font size/weight
-  const [fz, setFz] = useState("18px");
-  const [fw, setFw] = useState("400");
+  // ! State to manage the font height/width
+  const [ht, setHt] = useState("100px");
+  const [wd, setWd] = useState("200px");
+  const [htChange, setHtChange] = useState(false);
+  const [wdChange, setWdChange] = useState(false);
   // ! initial render shift for textlabel
   const [firstSet, setFirstSet] = useState(true);
   // ! Show/hide inputbox
   const [showInput, setShowInput] = useState(false);
   // ! handle the uploaded file
-  const [file, setFile] = useState("null");
+  const [file, setFile] = useState(null);
   const shiftTag = () => {
     gsap.to(dragRef.current, { y: "+=210", duration: 0 });
   };
   useEffect(() => {
     const elementPos = dragRef.current.getBoundingClientRect();
-    console.log("for label", elementPos);
     Draggable.create(dragRef.current, {
       onDragEnd: async () => {
         await setBound(props.boundRef.current);
@@ -72,14 +77,15 @@ function DraggableImage(props) {
     setLeft(elementPos.left);
     setTop(elementPos.top - 210);
     setDrag({ x: elementPos.width, y: elementPos.height - 210 });
+    setFile(dummyImage);
   }, []);
   // ! effect for bound change
   useEffect(() => {
     // console.log(elementPos);
     Draggable.create(dragRef.current, {
-      onDragEnd: () => {
+      onDragEnd: function () {
         setBound(props.boundRef.current);
-        setLabelClass("drag drag-label--dropped");
+        setImageClass("drag drag-image--dropped");
         const elementPos = dragRef.current.getBoundingClientRect();
         setElementPosition({ x: elementPos.x, y: elementPos.y });
         setPosition({
@@ -91,6 +97,9 @@ function DraggableImage(props) {
           console.log(firstSet);
           setFirstSet(false);
           shiftTag();
+        }
+        if (this.hitTest(props.bin.current, "30%")) {
+          dragRef.current.style.display = "none";
         }
       },
       onPress: () => {
@@ -133,25 +142,31 @@ function DraggableImage(props) {
       setTimeout(resolve, 300);
     });
   }
-  function modalSubmit() {
+  function modalSubmit(param = "no") {
     if (position.x !== 0 && position.y !== 0) {
       gsap.to(dragRef.current, {
         x: elementPosition.x - left,
         y: elementPosition.y - top,
       });
     }
-    imageRef.current.style.fontSize = fz;
-    imageRef.current.style.fontWeight = fw;
+    if (param === "htwd") {
+      imageRef.current.style.height = ht;
+      imageRef.current.style.width = wd;
+    }
+    if (param === "ht") imageRef.current.style.height = ht;
+    if (param === "wd") imageRef.current.style.width = wd;
     toggleModal();
   }
   return (
     <div>
-      <div className={labelClass} ref={dragRef} onClick={toggleModal}>
-        <img src={dots} alt="" />
+      <div className={imageClass} ref={dragRef} onClick={toggleModal}>
+        <img src={dots} alt="" className="drag-dots" />
         {!showInput ? <h2 className={borderClass}>{content}</h2> : null}
-
+        {/* <img src={dummyImage} alt="" className="content-image" /> */}
         {showInput ? (
-          <input
+          <img src={file} ref={imageRef} alt="" className="content-image" />
+        ) : null}
+        {/* <input
             type="file"
             placeholder="input text here"
             className={borderClass}
@@ -168,8 +183,7 @@ function DraggableImage(props) {
               };
               reader.readAsDataURL(ev.target.files[0]);
             }}
-          />
-        ) : null}
+          /> */}
       </div>
       <ModalProvider backgroundComponent={FadingBackground}>
         <div>
@@ -183,12 +197,11 @@ function DraggableImage(props) {
             backgroundProps={{ opacity }}
           >
             <div className="configuration-modal-wrapper">
-              <h1>Label ID - {props.index}</h1>
-              {file ? <img src={file} alt="something" /> : null}
+              <h1>Image label ID - {props.index}</h1>
               <div className="configuration-modal">
                 <input
                   type="text"
-                  placeholder="Label name"
+                  placeholder="Image title"
                   onChange={(ev) => setContent(ev.target.value)}
                 />
                 <div className="configuration-modal__position">
@@ -229,93 +242,64 @@ function DraggableImage(props) {
                 </div>
                 <div className="configuration-modal__styling">
                   <label htmlFor="">
-                    Font size
+                    Height
                     <input
                       type="text"
-                      placeholder="Font size"
-                      value={fz.replace("px", "")}
+                      placeholder="height"
+                      value={ht.replace("px", "")}
                       onChange={(ev) => {
-                        setFz(`${ev.target.value}px`);
+                        setHt(`${ev.target.value}px`);
+                        setHtChange(true);
                       }}
                       onKeyDown={(ev) => {
-                        if (ev.key === "Enter") modalSubmit();
+                        if (ev.key === "Enter") modalSubmit("ht");
                       }}
                     />
                   </label>
                   <label htmlFor="">
-                    Font weight
+                    Width
                     <input
                       type="text"
-                      placeholder="Font weight"
-                      value={fw.replace("px", "")}
+                      placeholder="width"
+                      value={wd.replace("px", "")}
                       onChange={(ev) => {
-                        setFw(ev.target.value);
+                        setWd(`${ev.target.value}px`);
+                        setWdChange(true);
                       }}
                       onKeyDown={(ev) => {
-                        if (ev.key === "Enter") modalSubmit();
+                        if (ev.key === "Enter") modalSubmit("wd");
                       }}
                     />
                   </label>
                 </div>
-                <div className="configuration-modal__bg">
-                  <input
-                    type="radio"
-                    name="bg"
-                    onChange={(ev) => {
-                      ev.target.checked
-                        ? (imageRef.current.style.color = "#042a2b")
-                        : (imageRef.current.style.color = "#fff");
-                    }}
-                  />
-                  <input
-                    type="radio"
-                    name="bg"
-                    onChange={(ev) => {
-                      ev.target.checked
-                        ? (imageRef.current.style.color = "#ef7b45")
-                        : (imageRef.current.style.color = "#fff");
-                    }}
-                  />
-                  <input
-                    type="radio"
-                    name="bg"
-                    onChange={(ev) => {
-                      ev.target.checked
-                        ? (imageRef.current.style.color = "#cbef43")
-                        : (imageRef.current.style.color = "#fff");
-                    }}
-                  />
-                  <input
-                    type="radio"
-                    name="bg"
-                    onChange={(ev) => {
-                      ev.target.checked
-                        ? (imageRef.current.style.color = "#c45baa")
-                        : (imageRef.current.style.color = "#fff");
-                    }}
-                  />
-                  <input
-                    type="radio"
-                    name="bg"
-                    onChange={(ev) => {
-                      ev.target.checked
-                        ? (imageRef.current.style.color = "#6c464f")
-                        : (imageRef.current.style.color = "#fff");
-                    }}
-                  />
-                  <input
-                    type="radio"
-                    name="bg"
-                    onChange={(ev) => {
-                      ev.target.checked
-                        ? (imageRef.current.style.color = "#fff")
-                        : (imageRef.current.style.color = "#fff");
-                    }}
-                  />
-                </div>
               </div>
+              <input
+                type="file"
+                className="file-upload"
+                onChange={(ev) => {
+                  setFile(URL.createObjectURL(ev.target.files[0]));
+                }}
+              />
               <div className="configuration-modal__btn-group">
-                <button onClick={modalSubmit}>Save changes</button>
+                <button
+                  onClick={() => {
+                    if (htChange && wdChange) {
+                      modalSubmit("htwd");
+                      setHtChange(false);
+                      setWdChange(false);
+                    } else if (htChange) {
+                      modalSubmit("ht");
+                      setHtChange(false);
+                    } else if (wdChange) {
+                      modalSubmit("wd");
+                      setWdChange(false);
+                    } else {
+                      modalSubmit();
+                    }
+                  }}
+                >
+                  Save changes
+                </button>
                 <button onClick={toggleModal}>Close</button>
               </div>
             </div>
