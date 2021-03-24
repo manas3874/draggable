@@ -43,8 +43,10 @@ function DraggableLabel(props) {
   const [drag, setDrag] = useState({ x: 0, y: 0 });
   // ! Classname setting for dropping
   const [labelClass, setLabelClass] = useState("drag drag-label");
-  // ! State to manage the font size
+  const [borderClass, setBorderClass] = useState("no-border");
+  // ! State to manage the font size/weight
   const [fz, setFz] = useState("18px");
+  const [fw, setFw] = useState("400");
   useEffect(() => {
     const elementPos = dragRef.current.getBoundingClientRect();
     Draggable.create(dragRef.current, {
@@ -74,7 +76,12 @@ function DraggableLabel(props) {
           y: Math.round(elementPosition.y),
         });
       },
-
+      onPress: () => {
+        setBorderClass("red-border");
+      },
+      onRelease: () => {
+        setBorderClass("no-border");
+      },
       bounds: bound,
       type: "x,y",
       liveSnap: {
@@ -109,11 +116,24 @@ function DraggableLabel(props) {
       setTimeout(resolve, 300);
     });
   }
+  function modalSubmit() {
+    if (position.x !== 0 && position.y !== 0) {
+      gsap.to(dragRef.current, {
+        x: position.x - left,
+        y: position.y - top,
+      });
+    }
+    labelRef.current.style.fontSize = fz;
+    labelRef.current.style.fontWeight = fw;
+    toggleModal();
+  }
   return (
     <div>
       <div className={labelClass} ref={dragRef} onClick={toggleModal}>
         <img src={dots} alt="" />
-        <h2 ref={labelRef}>{content}</h2>
+        <h2 className={borderClass} ref={labelRef}>
+          {content}
+        </h2>
       </div>
       <ModalProvider backgroundComponent={FadingBackground}>
         <div>
@@ -177,32 +197,71 @@ function DraggableLabel(props) {
                     onChange={(ev) => {
                       setFz(`${ev.target.value}px`);
                     }}
+                    onKeyDown={(ev) => {
+                      if (ev.key === "Enter") modalSubmit();
+                    }}
                   />
-                  <input type="text" placeholder="Font weight" />
+                  <input
+                    type="text"
+                    placeholder="Font weight"
+                    onChange={(ev) => {
+                      setFw(ev.target.value);
+                    }}
+                    onKeyDown={(ev) => {
+                      if (ev.key === "Enter") modalSubmit();
+                    }}
+                  />
                 </div>
                 <div className="configuration-modal__bg">
-                  <input type="radio" name="bg" />
-                  <input type="radio" name="bg" />
-                  <input type="radio" name="bg" />
-                  <input type="radio" name="bg" />
-                  <input type="radio" name="bg" />
+                  <input
+                    type="radio"
+                    name="bg"
+                    onChange={(ev) => {
+                      ev.target.checked
+                        ? (labelRef.current.style.color = "#042a2b")
+                        : (labelRef.current.style.color = "#fff");
+                    }}
+                  />
+                  <input
+                    type="radio"
+                    name="bg"
+                    onChange={(ev) => {
+                      ev.target.checked
+                        ? (labelRef.current.style.color = "#ef7b45")
+                        : (labelRef.current.style.color = "#fff");
+                    }}
+                  />
+                  <input
+                    type="radio"
+                    name="bg"
+                    onChange={(ev) => {
+                      ev.target.checked
+                        ? (labelRef.current.style.color = "#cbef43")
+                        : (labelRef.current.style.color = "#fff");
+                    }}
+                  />
+                  <input
+                    type="radio"
+                    name="bg"
+                    onChange={(ev) => {
+                      ev.target.checked
+                        ? (labelRef.current.style.color = "#c45baa")
+                        : (labelRef.current.style.color = "#fff");
+                    }}
+                  />
+                  <input
+                    type="radio"
+                    name="bg"
+                    onChange={(ev) => {
+                      ev.target.checked
+                        ? (labelRef.current.style.color = "#6c464f")
+                        : (labelRef.current.style.color = "#fff");
+                    }}
+                  />
                 </div>
               </div>
               <div className="configuration-modal__btn-group">
-                <button
-                  onClick={() => {
-                    if (position.x !== 0 && position.y !== 0) {
-                      gsap.to(dragRef.current, {
-                        x: position.x - left,
-                        y: position.y - top,
-                      });
-                    }
-
-                    labelRef.current.style.fontSize = fz;
-                  }}
-                >
-                  Save changes
-                </button>
+                <button onClick={modalSubmit}>Save changes</button>
                 <button onClick={toggleModal}>Close</button>
               </div>
             </div>

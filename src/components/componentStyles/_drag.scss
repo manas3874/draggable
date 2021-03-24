@@ -42,6 +42,14 @@
     }
     h2 {
       color: #fff;
+      padding: 0.5rem;
+      font-weight: 400;
+    }
+    h2.no-border {
+      border: none;
+    }
+    h2.red-border {
+      border: 2px solid red;
     }
   }
   &-input {
