@@ -11,18 +11,23 @@ const FadingBackground = styled(BaseModalBackground)`
 `;
 
 const StyledModal = Modal.styled`
-  width: 20rem;
-  height: 20rem;
+  width: 35rem;
+  height: 45rem;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: white;
   opacity: ${(props) => props.opacity};
-  transition : all 0.3s ease-in-out;`;
+  transition : all 0.3s ease-in-out;
+  box-shadow:0px 0px 10px rgba(0,0,0,0.6);
+  border-radius:10px;
+  padding:20px 20px;
+  `;
 
 function DraggableLabel(props) {
   // ! Ref for the draggable div
   const dragRef = useRef(null);
+  const labelRef = useRef(null);
   // ! State to change the bounds
   const [bound, setBound] = useState("body");
   // ! State to update the content
@@ -32,29 +37,55 @@ function DraggableLabel(props) {
   // ! State to manage the element's left and top position
   const [left, setLeft] = useState(0);
   const [top, setTop] = useState(0);
+  // ! element's current position, to live update in the modal
+  const [elementPosition, setElementPosition] = useState({ x: 0, y: 0 });
   // ! state for dimensions of the drag component
   const [drag, setDrag] = useState({ x: 0, y: 0 });
+  // ! Classname setting for dropping
+  const [labelClass, setLabelClass] = useState("drag drag-label");
+  // ! State to manage the font size
+  const [fz, setFz] = useState("18px");
   useEffect(() => {
+    const elementPos = dragRef.current.getBoundingClientRect();
     Draggable.create(dragRef.current, {
       onDragEnd: async () => {
         await setBound(props.boundRef.current);
+        console.log("elementPos");
       },
       bounds: bound,
     });
     // ! Getting the element's position in the dom
-    const elementPos = dragRef.current.getBoundingClientRect();
-    // console.log(elementPos);
+
     setLeft(elementPos.left);
     setTop(elementPos.top);
     setDrag({ x: elementPos.width, y: elementPos.height });
   }, []);
   // ! effect for bound change
   useEffect(() => {
+    // console.log(elementPos);
     Draggable.create(dragRef.current, {
-      onDragEnd: async () => {
-        await setBound(props.boundRef.current);
+      onDragEnd: () => {
+        setBound(props.boundRef.current);
+        setLabelClass("drag drag-label--dropped");
+        const elementPos = dragRef.current.getBoundingClientRect();
+        setElementPosition({ x: elementPos.x, y: elementPos.y });
+        setPosition({
+          x: Math.round(elementPosition.x),
+          y: Math.round(elementPosition.y),
+        });
       },
+
       bounds: bound,
+      type: "x,y",
+      liveSnap: {
+        // ! snaps to the closest increment of 10 by default.
+        x: function (value) {
+          return Math.round(value / 10) * 10;
+        },
+        y: function (value) {
+          return Math.round(value / 10) * 10;
+        },
+      },
     });
   }, [bound]);
   // ! for modal
@@ -80,9 +111,9 @@ function DraggableLabel(props) {
   }
   return (
     <div>
-      <div className="drag drag-label" ref={dragRef} onClick={toggleModal}>
+      <div className={labelClass} ref={dragRef} onClick={toggleModal}>
         <img src={dots} alt="" />
-        <h2>{content}</h2>
+        <h2 ref={labelRef}>{content}</h2>
       </div>
       <ModalProvider backgroundComponent={FadingBackground}>
         <div>
@@ -96,7 +127,7 @@ function DraggableLabel(props) {
             backgroundProps={{ opacity }}
           >
             <div className="configuration-modal-wrapper">
-              <h1>{props.index}</h1>
+              <h1>Label ID - {props.index}</h1>
               <div className="configuration-modal">
                 <input
                   type="text"
@@ -105,10 +136,10 @@ function DraggableLabel(props) {
                 />
                 <div className="configuration-modal__position">
                   <label htmlFor="">
-                    Limit - {Math.round(props.bounds.x - drag.x)}
+                    Limit (x) - {Math.round(props.bounds.x - drag.x)}
                     <input
                       type="text"
-                      placeholder="Position - X"
+                      placeholder={Math.round(elementPosition.x)}
                       onChange={(ev) =>
                         setPosition({
                           ...position,
@@ -122,10 +153,10 @@ function DraggableLabel(props) {
                     />
                   </label>
                   <label htmlFor="">
-                    Limit - {Math.round(props.bounds.y - drag.y)}
+                    Limit (y) - {Math.round(props.bounds.y - drag.y)}
                     <input
                       type="text"
-                      placeholder="Position - Y"
+                      placeholder={Math.round(elementPosition.y)}
                       onChange={(ev) =>
                         setPosition({
                           ...position,
@@ -140,7 +171,13 @@ function DraggableLabel(props) {
                   </label>
                 </div>
                 <div className="configuration-modal__styling">
-                  <input type="text" placeholder="Font size" />
+                  <input
+                    type="text"
+                    placeholder="Font size"
+                    onChange={(ev) => {
+                      setFz(`${ev.target.value}px`);
+                    }}
+                  />
                   <input type="text" placeholder="Font weight" />
                 </div>
                 <div className="configuration-modal__bg">
@@ -149,20 +186,25 @@ function DraggableLabel(props) {
                   <input type="radio" name="bg" />
                   <input type="radio" name="bg" />
                   <input type="radio" name="bg" />
-                  <input type="radio" name="bg" />
                 </div>
               </div>
-              <button
-                onClick={() =>
-                  gsap.to(dragRef.current, {
-                    x: position.x - left,
-                    y: position.y - top,
-                  })
-                }
-              >
-                Submit
-              </button>
-              <button onClick={toggleModal}>Close me</button>
+              <div className="configuration-modal__btn-group">
+                <button
+                  onClick={() => {
+                    if (position.x !== 0 && position.y !== 0) {
+                      gsap.to(dragRef.current, {
+                        x: position.x - left,
+                        y: position.y - top,
+                      });
+                    }
+
+                    labelRef.current.style.fontSize = fz;
+                  }}
+                >
+                  Save changes
+                </button>
+                <button onClick={toggleModal}>Close</button>
+              </div>
             </div>
           </StyledModal>
         </div>

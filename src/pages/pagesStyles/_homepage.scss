@@ -1,13 +1,32 @@
+// ! Colors
+// $bg-color: rgb(14, 22, 27); //! dark bg
+$bg-color: rgb(45, 137, 202); //! light bg
+// $dot-color: rgb(200, 193, 219); //! light dots
+$dot-color: rgb(19, 11, 39); //! dark dots
+
+// ! Dimensions
+$dot-size: 1.3px;
+$dot-space: 10px;
+
 .homepage {
   display: grid;
   grid-template-columns: 4fr 1fr;
   height: 100vh;
   &__workspace {
-    background-color: lightgrey;
-    // width: 80vw;
+    // ! Dotted grid - change parameters with the variables above
+    background: linear-gradient(
+          90deg,
+          $bg-color ($dot-space - $dot-size),
+          transparent 1%
+        )
+        center,
+      linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center,
+      $dot-color;
+    background-size: $dot-space $dot-space;
+    box-shadow: 5px 5px 10px inset rgba(0, 0, 0, 0.3);
   }
   &__sidebar {
-    // width: 20vw;
+    box-shadow: -5px 1px 10px rgba(0, 0, 0, 0.3);
     background-color: lightblue;
     &--container {
       position: relative;

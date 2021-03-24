@@ -24,8 +24,9 @@ body {
   font-size: 1.8rem;
 }
 
-// $fancy-font: "Merienda One", cursive;
-// $main-font: "Roboto", sans-serif;
-// body {
-//   font-family: $main-font;
-// }
+button {
+  outline: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}

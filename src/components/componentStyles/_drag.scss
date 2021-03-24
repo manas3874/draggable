@@ -33,6 +33,17 @@
       margin-left: 4rem;
     }
   }
+  &-label--dropped {
+    box-shadow: none;
+    height: max-content;
+    width: max-content;
+    img {
+      display: none;
+    }
+    h2 {
+      color: #fff;
+    }
+  }
   &-input {
     background-color: limegreen;
   }

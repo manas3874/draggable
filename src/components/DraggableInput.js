@@ -8,7 +8,12 @@ function DraggableInput() {
   const [left, setLeft] = useState(0);
   const [top, setTop] = useState(0);
   useEffect(() => {
-    Draggable.create(dragRef.current);
+    Draggable.create(dragRef.current, {
+      liveSnap: {
+        x: [0, 100, 200, 300, 400, 500],
+        y: [0, 100, 200, 300, 400, 500],
+      },
+    });
 
     const elementPos = dragRef.current.getBoundingClientRect();
     // console.log(elementPos);
