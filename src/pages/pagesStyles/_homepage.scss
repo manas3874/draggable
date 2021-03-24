@@ -12,7 +12,7 @@ $dot-space: 10px;
   display: grid;
   grid-template-columns: 4fr 1fr;
   height: 100vh;
-  overflow-x: hidden;
+  overflow: hidden;
   .toggle-dark-mode {
     display: block;
     width: 5rem;
