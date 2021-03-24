@@ -4,6 +4,7 @@ import { Draggable } from "gsap/Draggable";
 import styled from "styled-components";
 import Modal, { ModalProvider, BaseModalBackground } from "styled-react-modal";
 import dots from "../assets/draggable-dots.svg";
+// import { BlockPicker } from "react-color";
 gsap.registerPlugin(Draggable);
 const FadingBackground = styled(BaseModalBackground)`
   opacity: ${(props) => props.opacity};
@@ -12,7 +13,7 @@ const FadingBackground = styled(BaseModalBackground)`
 
 const StyledModal = Modal.styled`
   width: 35rem;
-  height: 45rem;
+  height: 55rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,14 +25,14 @@ const StyledModal = Modal.styled`
   padding:20px 20px;
   `;
 
-function DraggableButton(props) {
+function DraggableImage(props) {
   // ! Ref for the draggable div
   const dragRef = useRef(null);
-  const buttonRef = useRef(null);
+  const imageRef = useRef(null);
   // ! State to change the bounds
   const [bound, setBound] = useState("body");
   // ! State to update the content
-  const [content, setContent] = useState("Button text");
+  const [content, setContent] = useState("Image upload");
   // ! State to manage the positions
   const [position, setPosition] = useState({ x: 0, y: 0 });
   // ! State to manage the element's left and top position
@@ -42,7 +43,7 @@ function DraggableButton(props) {
   // ! state for dimensions of the drag component
   const [drag, setDrag] = useState({ x: 0, y: 0 });
   // ! Classname setting for dropping
-  const [buttonClass, setButtonClass] = useState("drag drag-button");
+  const [labelClass, setLabelClass] = useState("drag drag-image");
   const [borderClass, setBorderClass] = useState("no-border");
   // ! State to manage the font size/weight
   const [fz, setFz] = useState("18px");
@@ -51,12 +52,14 @@ function DraggableButton(props) {
   const [firstSet, setFirstSet] = useState(true);
   // ! Show/hide inputbox
   const [showInput, setShowInput] = useState(false);
+  // ! handle the uploaded file
+  const [file, setFile] = useState("null");
   const shiftTag = () => {
-    gsap.to(dragRef.current, { y: "+=140", duration: 0 });
+    gsap.to(dragRef.current, { y: "+=210", duration: 0 });
   };
   useEffect(() => {
     const elementPos = dragRef.current.getBoundingClientRect();
-    console.log("for button", elementPos);
+    console.log("for label", elementPos);
     Draggable.create(dragRef.current, {
       onDragEnd: async () => {
         await setBound(props.boundRef.current);
@@ -67,15 +70,16 @@ function DraggableButton(props) {
     // ! Getting the element's position in the dom
 
     setLeft(elementPos.left);
-    setTop(elementPos.top - 140);
-    setDrag({ x: elementPos.width, y: elementPos.height - 140 });
+    setTop(elementPos.top - 210);
+    setDrag({ x: elementPos.width, y: elementPos.height - 210 });
   }, []);
   // ! effect for bound change
   useEffect(() => {
+    // console.log(elementPos);
     Draggable.create(dragRef.current, {
       onDragEnd: () => {
         setBound(props.boundRef.current);
-        setButtonClass("drag drag-button--dropped");
+        setLabelClass("drag drag-label--dropped");
         const elementPos = dragRef.current.getBoundingClientRect();
         setElementPosition({ x: elementPos.x, y: elementPos.y });
         setPosition({
@@ -84,6 +88,7 @@ function DraggableButton(props) {
         });
         setShowInput(true);
         if (firstSet) {
+          console.log(firstSet);
           setFirstSet(false);
           shiftTag();
         }
@@ -135,24 +140,35 @@ function DraggableButton(props) {
         y: elementPosition.y - top,
       });
     }
-    buttonRef.current.style.fontSize = fz;
-    buttonRef.current.style.fontWeight = fw;
+    imageRef.current.style.fontSize = fz;
+    imageRef.current.style.fontWeight = fw;
     toggleModal();
   }
   return (
     <div>
-      <div className={buttonClass} ref={dragRef} onClick={toggleModal}>
+      <div className={labelClass} ref={dragRef} onClick={toggleModal}>
         <img src={dots} alt="" />
         {!showInput ? <h2 className={borderClass}>{content}</h2> : null}
+
         {showInput ? (
-          <button
-            type="text"
+          <input
+            type="file"
             placeholder="input text here"
-            className="btn"
-            ref={buttonRef}
-          >
-            {content}
-          </button>
+            className={borderClass}
+            ref={imageRef}
+            accept="image/*"
+            onChange={(ev) => {
+              //   setFile(ev.target.files[0]);
+              //   console.log(ev.target.files[0]);
+              const reader = new FileReader();
+              reader.onload = () => {
+                if (reader.readyState === 2) {
+                  setFile(reader.result);
+                }
+              };
+              reader.readAsDataURL(ev.target.files[0]);
+            }}
+          />
         ) : null}
       </div>
       <ModalProvider backgroundComponent={FadingBackground}>
@@ -168,10 +184,11 @@ function DraggableButton(props) {
           >
             <div className="configuration-modal-wrapper">
               <h1>Label ID - {props.index}</h1>
+              {file ? <img src={file} alt="something" /> : null}
               <div className="configuration-modal">
                 <input
                   type="text"
-                  placeholder="Button name"
+                  placeholder="Label name"
                   onChange={(ev) => setContent(ev.target.value)}
                 />
                 <div className="configuration-modal__position">
@@ -211,28 +228,34 @@ function DraggableButton(props) {
                   </label>
                 </div>
                 <div className="configuration-modal__styling">
-                  <input
-                    type="text"
-                    placeholder="Font size"
-                    value={fz.replace("px", "")}
-                    onChange={(ev) => {
-                      setFz(`${ev.target.value}px`);
-                    }}
-                    onKeyDown={(ev) => {
-                      if (ev.key === "Enter") modalSubmit();
-                    }}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Font weight"
-                    value={fw.replace("px", "")}
-                    onChange={(ev) => {
-                      setFw(ev.target.value);
-                    }}
-                    onKeyDown={(ev) => {
-                      if (ev.key === "Enter") modalSubmit();
-                    }}
-                  />
+                  <label htmlFor="">
+                    Font size
+                    <input
+                      type="text"
+                      placeholder="Font size"
+                      value={fz.replace("px", "")}
+                      onChange={(ev) => {
+                        setFz(`${ev.target.value}px`);
+                      }}
+                      onKeyDown={(ev) => {
+                        if (ev.key === "Enter") modalSubmit();
+                      }}
+                    />
+                  </label>
+                  <label htmlFor="">
+                    Font weight
+                    <input
+                      type="text"
+                      placeholder="Font weight"
+                      value={fw.replace("px", "")}
+                      onChange={(ev) => {
+                        setFw(ev.target.value);
+                      }}
+                      onKeyDown={(ev) => {
+                        if (ev.key === "Enter") modalSubmit();
+                      }}
+                    />
+                  </label>
                 </div>
                 <div className="configuration-modal__bg">
                   <input
@@ -240,8 +263,8 @@ function DraggableButton(props) {
                     name="bg"
                     onChange={(ev) => {
                       ev.target.checked
-                        ? (buttonRef.current.style.backgroundColor = "#042a2b")
-                        : (buttonRef.current.style.backgroundColor = "#fff");
+                        ? (imageRef.current.style.color = "#042a2b")
+                        : (imageRef.current.style.color = "#fff");
                     }}
                   />
                   <input
@@ -249,8 +272,8 @@ function DraggableButton(props) {
                     name="bg"
                     onChange={(ev) => {
                       ev.target.checked
-                        ? (buttonRef.current.style.backgroundColor = "#ef7b45")
-                        : (buttonRef.current.style.backgroundColor = "#fff");
+                        ? (imageRef.current.style.color = "#ef7b45")
+                        : (imageRef.current.style.color = "#fff");
                     }}
                   />
                   <input
@@ -258,8 +281,8 @@ function DraggableButton(props) {
                     name="bg"
                     onChange={(ev) => {
                       ev.target.checked
-                        ? (buttonRef.current.style.backgroundColor = "#cbef43")
-                        : (buttonRef.current.style.backgroundColor = "#fff");
+                        ? (imageRef.current.style.color = "#cbef43")
+                        : (imageRef.current.style.color = "#fff");
                     }}
                   />
                   <input
@@ -267,8 +290,8 @@ function DraggableButton(props) {
                     name="bg"
                     onChange={(ev) => {
                       ev.target.checked
-                        ? (buttonRef.current.style.backgroundColor = "#c45baa")
-                        : (buttonRef.current.style.backgroundColor = "#fff");
+                        ? (imageRef.current.style.color = "#c45baa")
+                        : (imageRef.current.style.color = "#fff");
                     }}
                   />
                   <input
@@ -276,8 +299,8 @@ function DraggableButton(props) {
                     name="bg"
                     onChange={(ev) => {
                       ev.target.checked
-                        ? (buttonRef.current.style.backgroundColor = "#6c464f")
-                        : (buttonRef.current.style.backgroundColor = "#fff");
+                        ? (imageRef.current.style.color = "#6c464f")
+                        : (imageRef.current.style.color = "#fff");
                     }}
                   />
                   <input
@@ -285,8 +308,8 @@ function DraggableButton(props) {
                     name="bg"
                     onChange={(ev) => {
                       ev.target.checked
-                        ? (buttonRef.current.style.backgroundColor = "#fff")
-                        : (buttonRef.current.style.backgroundColor = "#fff");
+                        ? (imageRef.current.style.color = "#fff")
+                        : (imageRef.current.style.color = "#fff");
                     }}
                   />
                 </div>
@@ -303,4 +326,4 @@ function DraggableButton(props) {
   );
 }
 
-export default DraggableButton;
+export default DraggableImage;

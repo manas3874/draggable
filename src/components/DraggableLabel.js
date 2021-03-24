@@ -4,6 +4,7 @@ import { Draggable } from "gsap/Draggable";
 import styled from "styled-components";
 import Modal, { ModalProvider, BaseModalBackground } from "styled-react-modal";
 import dots from "../assets/draggable-dots.svg";
+// import { BlockPicker } from "react-color";
 gsap.registerPlugin(Draggable);
 const FadingBackground = styled(BaseModalBackground)`
   opacity: ${(props) => props.opacity};
@@ -12,7 +13,7 @@ const FadingBackground = styled(BaseModalBackground)`
 
 const StyledModal = Modal.styled`
   width: 35rem;
-  height: 45rem;
+  height: 55rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,6 +50,7 @@ function DraggableLabel(props) {
   const [fw, setFw] = useState("400");
   useEffect(() => {
     const elementPos = dragRef.current.getBoundingClientRect();
+    console.log("for label", elementPos);
     Draggable.create(dragRef.current, {
       onDragEnd: async () => {
         await setBound(props.boundRef.current);
@@ -119,8 +121,8 @@ function DraggableLabel(props) {
   function modalSubmit() {
     if (position.x !== 0 && position.y !== 0) {
       gsap.to(dragRef.current, {
-        x: position.x - left,
-        y: position.y - top,
+        x: elementPosition.x - left,
+        y: elementPosition.y - top,
       });
     }
     labelRef.current.style.fontSize = fz;
@@ -191,26 +193,34 @@ function DraggableLabel(props) {
                   </label>
                 </div>
                 <div className="configuration-modal__styling">
-                  <input
-                    type="text"
-                    placeholder="Font size"
-                    onChange={(ev) => {
-                      setFz(`${ev.target.value}px`);
-                    }}
-                    onKeyDown={(ev) => {
-                      if (ev.key === "Enter") modalSubmit();
-                    }}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Font weight"
-                    onChange={(ev) => {
-                      setFw(ev.target.value);
-                    }}
-                    onKeyDown={(ev) => {
-                      if (ev.key === "Enter") modalSubmit();
-                    }}
-                  />
+                  <label htmlFor="">
+                    Font size
+                    <input
+                      type="text"
+                      placeholder="Font size"
+                      value={fz.replace("px", "")}
+                      onChange={(ev) => {
+                        setFz(`${ev.target.value}px`);
+                      }}
+                      onKeyDown={(ev) => {
+                        if (ev.key === "Enter") modalSubmit();
+                      }}
+                    />
+                  </label>
+                  <label htmlFor="">
+                    Font weight
+                    <input
+                      type="text"
+                      placeholder="Font weight"
+                      value={fw.replace("px", "")}
+                      onChange={(ev) => {
+                        setFw(ev.target.value);
+                      }}
+                      onKeyDown={(ev) => {
+                        if (ev.key === "Enter") modalSubmit();
+                      }}
+                    />
+                  </label>
                 </div>
                 <div className="configuration-modal__bg">
                   <input
@@ -255,6 +265,15 @@ function DraggableLabel(props) {
                     onChange={(ev) => {
                       ev.target.checked
                         ? (labelRef.current.style.color = "#6c464f")
+                        : (labelRef.current.style.color = "#fff");
+                    }}
+                  />
+                  <input
+                    type="radio"
+                    name="bg"
+                    onChange={(ev) => {
+                      ev.target.checked
+                        ? (labelRef.current.style.color = "#fff")
                         : (labelRef.current.style.color = "#fff");
                     }}
                   />
