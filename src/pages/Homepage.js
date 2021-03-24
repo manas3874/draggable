@@ -18,7 +18,7 @@ function Homepage() {
   // const [close, setClose] = useState(null);
   // const [open, setOpen] = useState(null);
   // ! tag limit
-  const [tagLimit, setTagLimit] = useState(3);
+  const [tagLimit, setTagLimit] = useState(10);
   // ! workspace bounds state
   const [workspace, setWorkspace] = useState({ x: 0, y: 0 });
   // ! Dark mode/ light mode
@@ -127,7 +127,6 @@ function Homepage() {
         <div className="bin" ref={binRef}>
           <img src={trash} alt="" />
         </div>
-        
       </div>
       <div className="homepage__sidebar" ref={sidebarRef}>
         <div className="homepage__sidebar--container">{setLabels()}</div>
