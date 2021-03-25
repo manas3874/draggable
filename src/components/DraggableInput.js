@@ -4,29 +4,8 @@ import { Draggable } from "gsap/Draggable";
 import styled from "styled-components";
 import Modal, { ModalProvider, BaseModalBackground } from "styled-react-modal";
 import dots from "../assets/draggable-dots.svg";
+import InputModal from "./modals/InputModal";
 gsap.registerPlugin(Draggable);
-const FadingBackground = styled(BaseModalBackground)`
-  opacity: ${(props) => props.opacity};
-  transition: all 0.3s ease-in-out;
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  width: 100vw;
-`;
-
-const StyledModal = Modal.styled`
-  width: 35rem;
-  height: 65rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  opacity: ${(props) => props.opacity};
-  transition : all 0.3s ease-in-out;
-  box-shadow:0px 0px 10px rgba(0,0,0,0.6);
-  border-radius:10px;
-  padding:20px 20px;
-  `;
 function DraggableInput(props) {
   // ! Ref for the draggable div
   const dragRef = useRef(null);
@@ -152,18 +131,6 @@ function DraggableInput(props) {
     setIsOpen(!isOpen);
   }
 
-  function afterOpen() {
-    setTimeout(() => {
-      setOpacity(1);
-    }, 100);
-  }
-
-  function beforeClose() {
-    return new Promise((resolve) => {
-      setOpacity(0);
-      setTimeout(resolve, 300);
-    });
-  }
   function modalSubmit() {
     if (position.x !== 0 && position.y !== 0) {
       gsap.to(dragRef.current, {
@@ -193,184 +160,24 @@ function DraggableInput(props) {
           />
         ) : null}
       </div>
-      <ModalProvider backgroundComponent={FadingBackground}>
-        <div>
-          <StyledModal
-            isOpen={isOpen}
-            afterOpen={afterOpen}
-            beforeClose={beforeClose}
-            onBackgroundClick={toggleModal}
-            onEscapeKeydown={toggleModal}
-            opacity={opacity}
-            backgroundProps={{ opacity }}
-          >
-            <div className="configuration-modal-wrapper">
-              <h1>Input label ID - {props.index}</h1>
-              <div className="configuration-modal">
-                <input
-                  type="text"
-                  placeholder="Input text"
-                  onChange={(ev) => setContent(ev.target.value)}
-                />
-                <div className="configuration-modal__position">
-                  <label htmlFor="">
-                    Limit (x) - {Math.round(props.bounds.x - drag.x)}
-                    <input
-                      type="text"
-                      placeholder={Math.round(elementPosition.x)}
-                      onChange={(ev) =>
-                        setPosition({
-                          ...position,
-                          x:
-                            Number(ev.target.value) <
-                            Math.round(props.bounds.x - drag.x)
-                              ? Number(ev.target.value)
-                              : Math.round(props.bounds.x - drag.x),
-                        })
-                      }
-                    />
-                  </label>
-                  <label htmlFor="">
-                    Limit (y) - {Math.round(props.bounds.y - drag.y)}
-                    <input
-                      type="text"
-                      placeholder={Math.round(elementPosition.y)}
-                      onChange={(ev) =>
-                        setPosition({
-                          ...position,
-                          y:
-                            Number(ev.target.value) <
-                            Math.round(props.bounds.y - drag.y)
-                              ? Number(ev.target.value)
-                              : Math.round(props.bounds.y - drag.y),
-                        })
-                      }
-                    />
-                  </label>
-                </div>
-                <div className="configuration-modal__styling">
-                  <label htmlFor="">
-                    Font size
-                    <input
-                      type="text"
-                      placeholder="Font size"
-                      value={fz.replace("px", "")}
-                      onChange={(ev) => {
-                        setFz(`${ev.target.value}px`);
-                      }}
-                      onKeyDown={(ev) => {
-                        if (ev.key === "Enter") modalSubmit();
-                      }}
-                    />
-                  </label>
-                  <label htmlFor="">
-                    Font weight
-                    <input
-                      type="text"
-                      placeholder="Font weight"
-                      value={fw.replace("px", "")}
-                      onChange={(ev) => {
-                        setFw(ev.target.value);
-                      }}
-                      onKeyDown={(ev) => {
-                        if (ev.key === "Enter") modalSubmit();
-                      }}
-                    />
-                  </label>
-                  <label htmlFor="">
-                    Height
-                    <input
-                      type="text"
-                      placeholder="height"
-                      value={ht.replace("px", "")}
-                      onChange={(ev) => {
-                        setHt(`${ev.target.value}px`);
-                      }}
-                      onKeyDown={(ev) => {
-                        if (ev.key === "Enter") modalSubmit();
-                      }}
-                    />
-                  </label>
-                  <label htmlFor="">
-                    Width
-                    <input
-                      type="text"
-                      placeholder="width"
-                      value={wd.replace("px", "")}
-                      onChange={(ev) => {
-                        setWd(`${ev.target.value}px`);
-                      }}
-                      onKeyDown={(ev) => {
-                        if (ev.key === "Enter") modalSubmit();
-                      }}
-                    />
-                  </label>
-                </div>
-                <div className="configuration-modal__bg">
-                  <input
-                    type="radio"
-                    name="bg"
-                    onChange={(ev) => {
-                      ev.target.checked
-                        ? (inputRef.current.style.color = "#042a2b")
-                        : (inputRef.current.style.color = "#fff");
-                    }}
-                  />
-                  <input
-                    type="radio"
-                    name="bg"
-                    onChange={(ev) => {
-                      ev.target.checked
-                        ? (inputRef.current.style.color = "#ef7b45")
-                        : (inputRef.current.style.color = "#fff");
-                    }}
-                  />
-                  <input
-                    type="radio"
-                    name="bg"
-                    onChange={(ev) => {
-                      ev.target.checked
-                        ? (inputRef.current.style.color = "#cbef43")
-                        : (inputRef.current.style.color = "#fff");
-                    }}
-                  />
-                  <input
-                    type="radio"
-                    name="bg"
-                    onChange={(ev) => {
-                      ev.target.checked
-                        ? (inputRef.current.style.color = "#c45baa")
-                        : (inputRef.current.style.color = "#fff");
-                    }}
-                  />
-                  <input
-                    type="radio"
-                    name="bg"
-                    onChange={(ev) => {
-                      ev.target.checked
-                        ? (inputRef.current.style.color = "#6c464f")
-                        : (inputRef.current.style.color = "#fff");
-                    }}
-                  />
-                  <input
-                    type="radio"
-                    name="bg"
-                    onChange={(ev) => {
-                      ev.target.checked
-                        ? (inputRef.current.style.color = "#fff")
-                        : (inputRef.current.style.color = "#fff");
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="configuration-modal__btn-group">
-                <button onClick={modalSubmit}>Save changes</button>
-                <button onClick={toggleModal}>Close</button>
-              </div>
-            </div>
-          </StyledModal>
-        </div>
-      </ModalProvider>
+      <InputModal
+        props={props}
+        setContent={setContent}
+        drag={drag}
+        elementPosition={elementPosition}
+        setPosition={setPosition}
+        position={position}
+        fz={fz}
+        setFz={setFz}
+        modalSubmit={modalSubmit}
+        fw={fw}
+        setFw={setFw}
+        inputRef={inputRef}
+        ht={ht}
+        setHt={setHt}
+        wd={wd}
+        setWd={setWd}
+      />
     </div>
   );
 }

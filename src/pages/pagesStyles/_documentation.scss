@@ -253,4 +253,34 @@
       }
     }
   }
+  &__file-structure {
+    display: grid !important;
+    grid-template-columns: 1fr 2fr;
+    > h1 {
+      text-align: center;
+      font-size: 4rem;
+    }
+    img {
+      width: 100%;
+    }
+    .file-structure-content {
+      h1 {
+        text-align: center;
+        font-size: 5rem;
+        margin-top: 0;
+      }
+      p {
+        font-size: 2rem;
+        line-height: 30px;
+      }
+      li {
+        line-height: 35px;
+      }
+
+      span {
+        color: rgba(62, 148, 219, 1);
+        font-size: 2.2rem;
+      }
+    }
+  }
 }

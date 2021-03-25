@@ -27,7 +27,7 @@ function Homepage() {
   // const [image, takeScreenshot] = useScreenshot();
   // const getImage = () => takeScreenshot(workspaceRef.current);
   // ! tag limit
-  const [tagLimit, setTagLimit] = useState(10);
+  const [tagLimit, setTagLimit] = useState(1);
   // ! workspace bounds state
   const [workspace, setWorkspace] = useState({ x: 0, y: 0 });
   // ! Dark mode/ light mode

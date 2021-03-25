@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 // ! GSAP imports
 import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-
 // ! images imports
 import banner1 from "../assets/homepage-dark-grid.jpg";
 import banner2 from "../assets/homepage-light-no-grid.jpg";
@@ -14,6 +13,7 @@ import inputModal from "../assets/input-modal.PNG";
 import buttonModal from "../assets/button-modal.PNG";
 import imageModal from "../assets/image-modal.PNG";
 import arrow from "../assets/up-arrow.svg";
+import fileStructure from "../assets/file-structure.jpg";
 // ! tech-stack icons
 import react from "../assets/react.svg";
 import javascript from "../assets/javascript.svg";
@@ -37,6 +37,7 @@ function Documentation() {
   const bannerRef = useRef(null);
   const otherProjectsRef = useRef(null);
   const contactMeRef = useRef(null);
+  const fileStructureRef = useRef(null);
   // ! Scroll-to function
   const scroller = (ref) => {
     gsap.to(window, {
@@ -52,6 +53,7 @@ function Documentation() {
         <ul>
           <li onClick={() => scroller(bannerRef)}>Welcome</li>
           <li onClick={() => scroller(howToUseRef)}>How to use</li>
+          <li onClick={() => scroller(fileStructureRef)}>File Structure</li>
           <li onClick={() => scroller(featuresRef)}>Features</li>
           <li onClick={() => scroller(futureScopeRef)}>Future scope</li>
           <li onClick={() => scroller(knowsBugsRef)}>Known bugs</li>
@@ -312,6 +314,74 @@ function Documentation() {
             </p>
           </li>
         </ol>
+      </section>
+      {/* ! File structure section */}
+      <section
+        ref={fileStructureRef}
+        className="documentation-page__file-structure documentation-page__content section-split"
+      >
+        <img src={fileStructure} alt="" />
+        <div className="file-structure-content">
+          <h1>File Structure</h1>
+          <ol>
+            <li>
+              <p>The project follows typical React-app file-structure.</p>
+            </li>
+            <li>
+              <p>
+                In the <span>src</span> folder, there are 4 sub-folders, named.
+                <ol>
+                  <li>
+                    <span>assets</span> Houses all the images, videos and icons
+                    used within the project.
+                  </li>
+                  <li>
+                    <span>components</span> Has all the internal components of
+                    the project. These components are the draggable elements.
+                    <ul>
+                      <li>
+                        <span>component styles</span> Has all the styling
+                        required for the components.
+                      </li>
+                      <li>
+                        <span>modals</span> Has the configuration modals for the
+                        respective element components.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <span>helpers</span> This folder consists of the required
+                    helper functions which are reused across the project.
+                  </li>
+                  <li>
+                    <span>pages</span> All the pages that we have in our project
+                    will be housed in this folder. Currently we have the
+                    homepage and the documentation page
+                    <ul>
+                      <li>
+                        <span>pages styles</span> Has all the styling associated
+                        with the pages we have in our project
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <span>App.js</span> helps us route the pages internally with
+                    react-router and <span>index.js</span> helps us to mount our
+                    SPA (virtual DOM) onto the actual DOM, by targeting the DOM
+                    element with the id of <span>"root"</span>.
+                  </li>
+                </ol>
+              </p>
+            </li>
+            <li>
+              <p>
+                <span>Package.json</span> has our project's metadata, which
+                helps us to manage the state of the entire project, it's
+                versions, dependencies, scripts, etc.
+              </p>
+            </li>
+          </ol>
+        </div>
       </section>
       {/* Features section */}
       <section
