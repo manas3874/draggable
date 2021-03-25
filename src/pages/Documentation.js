@@ -28,6 +28,7 @@ import video from "../assets/draggable-sidebar.mp4";
 // ! Registering plugin
 gsap.registerPlugin(ScrollToPlugin);
 function Documentation() {
+  // ! Section refs
   const howToUseRef = useRef(null);
   const featuresRef = useRef(null);
   const futureScopeRef = useRef(null);
@@ -36,6 +37,7 @@ function Documentation() {
   const bannerRef = useRef(null);
   const otherProjectsRef = useRef(null);
   const contactMeRef = useRef(null);
+  // ! Scroll-to function
   const scroller = (ref) => {
     gsap.to(window, {
       scrollTo: ref.current,
@@ -81,6 +83,7 @@ function Documentation() {
           <img src={banner2} alt="banner-2" />
         </div>
       </section>
+      {/*  Tech-stack */}
       <section className="documentation-page__tech-stack documentation-page__content section-split">
         <img src={react} alt="raact" />
         <img src={javascript} alt="javascript" />
@@ -90,6 +93,7 @@ function Documentation() {
         <img src={githubGrey} alt="github" />
         <img src={heroku} alt="heroku" />
       </section>
+      {/* How to use section */}
       <section
         ref={howToUseRef}
         className="documentation-page__how-to-use documentation-page__content section-split"
@@ -105,7 +109,10 @@ function Documentation() {
               <a href="https://github.com/manas3874/draggable">
                 Github repository
               </a>
-              . All current changes will be updated in the application.
+              . All current changes will be updated in the application. The app
+              is made on a 1700px+ screensize. It's use on machines with smaller
+              screensize might make everything look scaled-up. In such a case it
+              is recommended to zoom-out the browser window.
             </p>
           </li>
           <li>
@@ -306,6 +313,7 @@ function Documentation() {
           </li>
         </ol>
       </section>
+      {/* Features section */}
       <section
         ref={featuresRef}
         className="documentation-page__features documentation-page__content section-split"
@@ -370,6 +378,7 @@ function Documentation() {
           </li>
         </ol>
       </section>
+      {/* Future scope section */}
       <section
         ref={futureScopeRef}
         className="documentation-page__future documentation-page__content section-split"
@@ -422,6 +431,7 @@ function Documentation() {
           </li>
         </ol>
       </section>
+      {/* Known bugs section */}
       <section
         ref={knowsBugsRef}
         className="documentation-page__known-bugs documentation-page__content section-split"
@@ -482,6 +492,7 @@ function Documentation() {
           </li>
         </ol>
       </section>
+      {/* References section */}
       <section
         ref={referencesRef}
         className="documentation-page__references documentation-page__content section-split"
@@ -534,6 +545,7 @@ function Documentation() {
           </li>
         </ol>
       </section>
+      {/* Other projects footer */}
       <footer
         className="documentation-page__footer documentation-page__content section-split"
         ref={otherProjectsRef}
@@ -621,6 +633,7 @@ function Documentation() {
           </li>
         </ol>
       </footer>
+      {/* Contact section */}
       <section className="section-split contact-me" ref={contactMeRef}>
         <h1>Liked what you saw? Let's talk!</h1>
         <p>
@@ -631,8 +644,14 @@ function Documentation() {
             </a>
           </code>
         </p>
+        <p>
+          Contribute or raise issues on{" "}
+          <code>
+            <a href="https://github.com/manas3874/draggable">Github.</a>
+          </code>
+        </p>
       </section>
-
+      {/* ! back to top button */}
       <img
         src={arrow}
         alt="back-to-top"
