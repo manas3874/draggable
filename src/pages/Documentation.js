@@ -1,17 +1,64 @@
-import React from "react";
+import React, { useRef } from "react";
+// ! GSAP imports
+import { gsap } from "gsap";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+
+// ! images imports
 import banner1 from "../assets/homepage-dark-grid.PNG";
 import banner2 from "../assets/homepage-light-no-grid.PNG";
-import github from "../assets/github.svg";
 import link from "../assets/link.svg";
-import homepageBlank from "../assets/homepage-blank.svg";
+import linkGrey from "../assets/link-grey.svg";
+import homepageBlank from "../assets/homepage-blank.PNG";
 import labelModal from "../assets/label-modal.PNG";
 import inputModal from "../assets/input-modal.PNG";
 import buttonModal from "../assets/button-modal.PNG";
 import imageModal from "../assets/image-modal.PNG";
+import arrow from "../assets/up-arrow.svg";
+// ! tech-stack icons
+import react from "../assets/react.svg";
+import javascript from "../assets/javascript.svg";
+import sass from "../assets/sass.svg";
+import gsapIcon from "../assets/gsapsvg.svg";
+import npm from "../assets/npm.svg";
+import github from "../assets/github.svg";
+import githubGrey from "../assets/github-grey.svg";
+import heroku from "../assets/heroku.svg";
+// ! Video import
+import video from "../assets/draggable-sidebar.mp4";
+// ! Registering plugin
+gsap.registerPlugin(ScrollToPlugin);
 function Documentation() {
+  const howToUseRef = useRef(null);
+  const featuresRef = useRef(null);
+  const futureScopeRef = useRef(null);
+  const knowsBugsRef = useRef(null);
+  const referencesRef = useRef(null);
+  const bannerRef = useRef(null);
+  const otherProjectsRef = useRef(null);
+  const contactMeRef = useRef(null);
+  const scroller = (ref) => {
+    gsap.to(window, {
+      scrollTo: ref.current,
+      ease: "ease-out",
+      duration: 1.5,
+      scrollBehavior: "smooth",
+    });
+  };
   return (
     <div className="documentation-page">
-      <section className="documentation-page__banner">
+      <div className="documentation-page__nav">
+        <ul>
+          <li onClick={() => scroller(bannerRef)}>Welcome</li>
+          <li onClick={() => scroller(howToUseRef)}>How to use</li>
+          <li onClick={() => scroller(featuresRef)}>Features</li>
+          <li onClick={() => scroller(futureScopeRef)}>Future scope</li>
+          <li onClick={() => scroller(knowsBugsRef)}>Known bugs</li>
+          <li onClick={() => scroller(referencesRef)}>References</li>
+          <li onClick={() => scroller(otherProjectsRef)}>Other projects</li>
+          <li onClick={() => scroller(contactMeRef)}>Contact me</li>
+        </ul>
+      </div>
+      <section ref={bannerRef} className="documentation-page__banner">
         <h1>Draggable page builder</h1>
         <p>
           This web-app is made using <span>ReactJS</span> and the
@@ -34,10 +81,23 @@ function Documentation() {
           <img src={banner2} alt="banner-2" />
         </div>
       </section>
-      <section className="documentation-page__how-to-use">
+      <section className="documentation-page__tech-stack documentation-page__content section-split">
+        <img src={react} alt="raact" />
+        <img src={javascript} alt="javascript" />
+        <img src={sass} alt="sass" />
+        <img src={gsapIcon} alt="gsapIcon" />
+        <img src={npm} alt="npm" />
+        <img src={githubGrey} alt="github" />
+        <img src={heroku} alt="heroku" />
+      </section>
+      <section
+        ref={howToUseRef}
+        className="documentation-page__how-to-use documentation-page__content section-split"
+      >
         <h1>How to use</h1>
         <ol>
           <li>
+            <h1>Welcome.</h1>
             <p>
               Visit the{" "}
               <a href="https://draggable-js.herokuapp.com/">online demo</a> for
@@ -77,6 +137,10 @@ function Documentation() {
                 <li>
                   Trash area. Drag an element into this area to delete it from
                   the workspace.
+                </li>
+                <li>
+                  You can click on the dropped elements to open their respective{" "}
+                  <code>configuration modals</code>
                 </li>
               </ol>
             </p>
@@ -242,8 +306,339 @@ function Documentation() {
           </li>
         </ol>
       </section>
-      <section className="documentation-page__future"></section>
-      <section className="documentation-page__known-bugs"></section>
+      <section
+        ref={featuresRef}
+        className="documentation-page__features documentation-page__content section-split"
+      >
+        <h1>Notable features</h1>
+        <ol>
+          <li>
+            <h1>GSAP draggable components.</h1>
+            <p>
+              Greensock Animation Platform is a robust and full-fledged
+              JavaScript animation library. The Draggable plugin is used here
+              for the elements to drag into the workspace and move around. The
+              GSAP tweens are used to shift the elements to a particular
+              location after inserting the position into the configuration
+              modal.
+            </p>
+          </li>
+          <li>
+            <h1>Dark and Light mode based on preference.</h1>
+            <p>
+              The workspace can have dark mode or light mode, which depends on
+              the preference of the user. The background does not get
+              completetely black/white. All the colors used in the workspace are
+              cool color.
+            </p>
+          </li>
+          <li>
+            <h1>
+              Dot-grid with snap-lock feature for accurate elements placement.
+            </h1>
+            <p>
+              The dot-grid is made using dots of 1px width and dot-space as 9px.
+              Making the grid snap to increments of 10px. Snap locking will help
+              you place the elements accurately in any position, and helps
+              greatly with alignments.
+            </p>
+          </li>
+          <li>
+            <h1>Toggle for snap-grid layout.</h1>
+            <p>
+              The snap-grid toggle button can disable/enable the snap grid. This
+              will help us to disable the snapping nature of the elements. If
+              you need free movement for your elements, you can disable the
+              snap-grid. The dark/light mode works the same regardless of the
+              snap-grid.
+            </p>
+          </li>
+          <li>
+            <h1>Workspace bounds for the placed elements.</h1>
+            <p>
+              The elements placed inside the worspace can not be dragged out of
+              the workspace. The elements can be removed/deleted by dragging
+              them into the trash-section.
+            </p>
+          </li>
+          <li>
+            <h1>Trash section to delete the elements.</h1>
+            <p>
+              The elements can be dragged into the trash-area in case we want to
+              delete these elements.
+            </p>
+          </li>
+        </ol>
+      </section>
+      <section
+        ref={futureScopeRef}
+        className="documentation-page__future documentation-page__content section-split"
+      >
+        <h1>Future scope</h1>
+        <ol>
+          <li>
+            <h1>Sliding sidebar on drag.</h1>
+            <p>
+              The provision for this feature is already made. The code is
+              commented within the Homepage file. The sidebar can be moved out
+              of the way to have a bigger workspace.
+            </p>
+            <video className="sidebar-video" controls src={video}></video>
+            <p>
+              The sliding sidebar had certain bugs and issues. Due to which this
+              feature was scrapped from the curent version.
+            </p>
+          </li>
+          <li>
+            <h1>Variable grid-size.</h1>
+            <p>
+              The grid size can be varied depending on what level of snapping we
+              require. There can be a feature to specify the dot-spacing. This
+              can be in multiples of 10 or any number the user wishes.
+            </p>
+          </li>
+          <li>
+            <h1>Alignment helpers like Photoshop.</h1>
+            <p>
+              The alignment lines and magnetic helpers can be included to make
+              designing as accurate as possible.
+            </p>
+          </li>
+          <li>
+            <h1>Trash memory to reterive deleted elements by ctrl+z.</h1>
+            <p>
+              The deleted elements can be stored in the local-storage or using
+              redux-persist and can be retreived by pressing ctrl+z or with a
+              deleted elements dropdown.
+            </p>
+          </li>
+          <li>
+            <h1>Pick and drag to resize the image.</h1>
+            <p>
+              The images can be resized using the corner pick-points like in
+              designing softwares or MS Word. This will help the user view the
+              changes in real time, and get to a desired image size.
+            </p>
+          </li>
+        </ol>
+      </section>
+      <section
+        ref={knowsBugsRef}
+        className="documentation-page__known-bugs documentation-page__content section-split"
+      >
+        <h1>Known issues and bugs</h1>
+        <ol>
+          <li>
+            <h1>Elements appear above the modal.</h1>
+            <p>
+              When we have dragged an element onto the workspace, and we open
+              the modal, the element can be drawn over the modal. The root cause
+              of this issue is in the internals of the modal used. This can be
+              fixed by making a modal within out app.
+            </p>
+          </li>
+          <li>
+            <h1>Images always follow the aspect ratio.</h1>
+            <p>
+              The images follow the aspect ratio unless the height is explicitly
+              given. This is caused because CSS property of width is already
+              given to the image element. The height gets automatically adjusted
+              based on the changed width.
+            </p>
+          </li>
+          <li>
+            <h1>Element can be drawn over the navbar</h1>
+            <p>
+              The element currently is on the top of all the components. This
+              causes the draggable element to be drawn over the navbar as well.
+              Which hides the functionality on the navbar.
+            </p>
+          </li>
+          <li>
+            <h1>Input-box text cannot be altered directly.</h1>
+            <p>
+              The input-box cannot be manipulated directly since the entire
+              element has a dragRef (React ref) associated. Hence, on any click,
+              the modal is triggered. Currently we an manipulate the content
+              from the modal.
+            </p>
+          </li>
+          <li>
+            <h1>Input-box width is not responsive.</h1>
+            <p>
+              The width of the input-box is not responsive currently, as we have
+              to specify the width and font-size that we require.
+            </p>
+          </li>
+          <li>
+            <h1>Live responsiveness.</h1>
+            <p>
+              The components will not respond to live changes in the
+              window-size-changes. A reload will fix the issue after
+              screen-size-change. This is caused since certain components are
+              positioned based on the bounds (rect) obtained during the mounting
+              of the components. This can be updated on window resize.
+            </p>
+          </li>
+        </ol>
+      </section>
+      <section
+        ref={referencesRef}
+        className="documentation-page__references documentation-page__content section-split"
+      >
+        <h1>References</h1>
+        <ol>
+          <li>
+            <h1>GSAP Draggable and ScrollToPlugin</h1>
+            <p>
+              The Draggable plugin is used on the application and ScrollToPlugin
+              is used on the documentation.
+              <code>
+                <a href="https://greensock.com/docs/Utilities/Draggable">
+                  Draggable documentation
+                </a>
+              </code>
+              <code>
+                <a href="https://greensock.com/docs/v3/Plugins/ScrollToPlugin">
+                  ScrollToPlugin documentation
+                </a>
+              </code>
+            </p>
+          </li>
+          <li>
+            <h1>React modal.</h1>
+            <p>
+              The library used to make styled modals is styled-react-modal. View
+              the{" "}
+              <code>
+                <a href="https://www.npmjs.com/package/styled-react-modal">
+                  documentation
+                </a>
+              </code>{" "}
+              here. This modal uses{" "}
+              <code>
+                <a href="https://www.npmjs.com/package/styled-components">
+                  styled components
+                </a>
+              </code>
+            </p>
+          </li>
+          <li>
+            <h1>SCSS styling using node-sass.</h1>
+            <p>
+              The entire styling is done using SCSS with the precompiler,{" "}
+              <code>
+                <a href="https://www.npmjs.com/package/node-sass">node-sass</a>
+              </code>
+            </p>
+          </li>
+        </ol>
+      </section>
+      <footer
+        className="documentation-page__footer documentation-page__content section-split"
+        ref={otherProjectsRef}
+      >
+        <h1>View my other projects.</h1>
+        <ol>
+          <li>
+            <h1>NPM package, fitness-calculator.</h1>
+            <p>
+              An NPM package built from scratch to help with the final year
+              project. This package reached 423 weekly downloads initially. Will
+              be updated with new functions.
+            </p>
+            <div className="links">
+              <a href="https://github.com/manas3874/fitness-calculator">
+                <img src={githubGrey} alt="" />
+              </a>{" "}
+              <a href="https://www.npmjs.com/package/fitness-calculator">
+                <img src={npm} alt="" />
+              </a>
+            </div>
+          </li>
+          <li>
+            <h1>AI Dietician, Final year project.</h1>
+            <p>
+              Full-time Dietician in an app, Providing recipe search, recipe
+              analysis, chatbot for food database, 3 level authentication and
+              much more. This MERN stack application is a personal diet
+              assistant.
+            </p>
+            <div className="links">
+              <a href="https://github.com/manas3874/dietician-fullstack">
+                <img src={githubGrey} alt="" />
+              </a>
+              <a href="https://dietician-app.herokuapp.com/">
+                <img src={linkGrey} alt="" />
+              </a>
+            </div>
+          </li>
+          <li>
+            <h1>Instagram automation.</h1>
+            <p>
+              Automated 2 personal instagram pages to save time for managing the
+              accounts.
+            </p>
+          </li>
+          <li>
+            <h1>Dummy admin panel.</h1>
+            <p>
+              Vanilla JavaScript and HTML+CSS admin panel to demonstrate the
+              filter, sort and search functionalities.{" "}
+            </p>
+            <div className="links">
+              <a href="https://github.com/manas3874/admin-js">
+                <img src={githubGrey} alt="" />
+              </a>
+              <a href="https://kind-swartz-a32b4c.netlify.app/">
+                <img src={linkGrey} alt="" />
+              </a>
+            </div>
+          </li>
+          <li>
+            <h1>UI task - cloning.</h1>
+            <p>Cloned 2 pages of a well designed website. </p>
+            <div className="links">
+              <a href="https://github.com/manas3874/twist_open">
+                <img src={githubGrey} alt="" />
+              </a>
+              <a href="https://peaceful-bassi-d5dfd6.netlify.app/">
+                <img src={linkGrey} alt="" />
+              </a>
+            </div>
+          </li>
+          <li>
+            <h1>UI task - from design.</h1>
+            <p>React app from designs of a hotel-chain website concept. </p>
+            <div className="links">
+              <a href="https://github.com/manas3874/ferofly-task">
+                <img src={githubGrey} alt="" />
+              </a>{" "}
+              <a href="https://practical-lalande-e2a253.netlify.app/">
+                <img src={linkGrey} alt="" />
+              </a>
+            </div>
+          </li>
+        </ol>
+      </footer>
+      <section className="section-split contact-me" ref={contactMeRef}>
+        <h1>Liked what you saw? Let's talk!</h1>
+        <p>
+          Connect via email at{" "}
+          <code>
+            <a href="mailto:tripathimanas98@gmail.com">
+              tripathimanas98@gmail.com
+            </a>
+          </code>
+        </p>
+      </section>
+
+      <img
+        src={arrow}
+        alt="back-to-top"
+        className="back-to-top"
+        onClick={() => scroller(bannerRef)}
+      />
     </div>
   );
 }

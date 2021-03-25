@@ -167,8 +167,8 @@ function DraggableInput(props) {
   function modalSubmit() {
     if (position.x !== 0 && position.y !== 0) {
       gsap.to(dragRef.current, {
-        x: elementPosition.x - left,
-        y: elementPosition.y - top,
+        x: position.x - left,
+        y: position.y - top,
       });
     }
     inputRef.current.style.fontSize = fz;
