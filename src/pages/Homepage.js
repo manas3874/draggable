@@ -5,8 +5,12 @@ import DraggableButton from "../components/DraggableButton";
 import DraggableImage from "../components/DraggableImage";
 import darkToggle from "../assets/dark-mode.svg";
 import gridIcon from "../assets/grid.svg";
+import reload from "../assets/reload.svg";
+
 import trash from "../assets/trash.svg";
 import { Link } from "react-router-dom";
+
+// import { useScreenshot } from "use-react-screenshot";
 // ! Provision for sliding sidebar (commented)
 // import { gsap } from "gsap";
 // import { Draggable } from "gsap/Draggable";
@@ -19,15 +23,15 @@ function Homepage() {
   // const [sidebarOpen, setSidebarOpen] = useState(true);
   // const [close, setClose] = useState(null);
   // const [open, setOpen] = useState(null);
+  // ! screenshot
+  // const [image, takeScreenshot] = useScreenshot();
+  // const getImage = () => takeScreenshot(workspaceRef.current);
   // ! tag limit
   const [tagLimit, setTagLimit] = useState(10);
   // ! workspace bounds state
   const [workspace, setWorkspace] = useState({ x: 0, y: 0 });
   // ! Dark mode/ light mode
   const [mode, setMode] = useState(false);
-  const [workspaceClass, setWorkspaceClass] = useState(
-    "homepage__workspace--light"
-  );
   // ! grid snap or no grid snap
   const [grid, setGrid] = useState(true);
   // ! Generating the usable labels
@@ -126,39 +130,37 @@ function Homepage() {
     <div className="homepage">
       <div className={generateClassname()} ref={workspaceRef}>
         <div className="toggle-background">
-          <img
-            src={darkToggle}
-            className="toggle-dark-mode"
-            alt="toggle dark mode"
-            onClick={() => {
-              if (!mode) {
-                setWorkspaceClass("homepage__workspace--dark");
-              } else {
-                setWorkspaceClass("homepage__workspace--light");
-              }
-              setMode(!mode);
-            }}
-          />
-          <img
-            src={gridIcon}
-            className="toggle-dark-mode"
-            alt="toggle grid snap"
-            onClick={() => setGrid(!grid)}
-          />
+          <div>
+            <img
+              src={darkToggle}
+              className="toggle-dark-mode"
+              alt="toggle dark mode"
+              onClick={() => setMode(!mode)}
+            />
+            <img
+              src={gridIcon}
+              className="toggle-dark-mode"
+              alt="toggle grid snap"
+              onClick={() => setGrid(!grid)}
+            />
+            <img
+              src={reload}
+              className="toggle-dark-mode"
+              alt="toggle grid snap"
+              onClick={() => window.location.reload()}
+            />
+          </div>
+
           <Link target="_blank" to="/documentation">
             Documentation
           </Link>
         </div>
-        
-        {/* <ReactToPdf>
-          {({ toPdf, sidebarRef }) => (
-            <div
-              style={{ width: 500, height: 500, background: "red" }}
-              onClick={toPdf}
-              ref={sidebarRef}
-            />
-          )}
-        </ReactToPdf> */}
+        {/* <button
+          style={{ marginBottom: "10px", color: "white" }}
+          onClick={getImage}
+        >
+          Take screenshot
+        </button> */}
         <div className="bin" ref={binRef}>
           <img src={trash} alt="" />
         </div>
