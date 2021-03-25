@@ -147,10 +147,6 @@ function Documentation() {
                   Trash area. Drag an element into this area to delete it from
                   the workspace.
                 </li>
-                <li>
-                  You can click on the dropped elements to open their respective{" "}
-                  <code>configuration modals</code>
-                </li>
               </ol>
             </p>
           </li>
