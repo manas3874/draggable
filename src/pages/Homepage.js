@@ -150,10 +150,18 @@ function Homepage() {
               onClick={() => window.location.reload()}
             />
           </div>
-
-          <Link target="_blank" to="/documentation">
-            Documentation
-          </Link>
+          <div>
+            <a
+              href="https://github.com/manas3874/draggable"
+              rel="noreferrer"
+              target="_blank"
+            >
+              Source code
+            </a>
+            <Link target="_blank" to="/documentation">
+              Documentation
+            </Link>
+          </div>
         </div>
         {/* <button
           style={{ marginBottom: "10px", color: "white" }}
