@@ -113,7 +113,32 @@ function DraggableButton(props) {
         },
       },
     });
-  }, [bound, firstSet]);
+  }, [bound, firstSet, props.grid]);
+  useEffect(() => {
+    if (!props.grid) {
+      Draggable.create(dragRef.current, {
+        liveSnap: false,
+        onDragEnd: function () {
+          setBound(props.boundRef.current);
+          setButtonClass("drag drag-button--dropped");
+          const elementPos = dragRef.current.getBoundingClientRect();
+          setElementPosition({ x: elementPos.x, y: elementPos.y });
+          setPosition({
+            x: Math.round(elementPosition.x),
+            y: Math.round(elementPosition.y),
+          });
+          setShowInput(true);
+          if (firstSet) {
+            setFirstSet(false);
+            shiftTag();
+          }
+          if (this.hitTest(props.bin.current, "30%")) {
+            dragRef.current.style.display = "none";
+          }
+        },
+      });
+    }
+  }, [props.grid]);
   // ! for modal
   const [isOpen, setIsOpen] = useState(false);
   const [opacity, setOpacity] = useState(0);

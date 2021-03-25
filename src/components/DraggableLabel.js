@@ -105,7 +105,28 @@ function DraggableLabel(props) {
         },
       },
     });
-  }, [bound]);
+  }, [bound, props.grid]);
+
+  useEffect(() => {
+    if (!props.grid) {
+      Draggable.create(dragRef.current, {
+        liveSnap: false,
+        onDragEnd: function (ev) {
+          setBound(props.boundRef.current);
+          setLabelClass("drag drag-label--dropped");
+          const elementPos = dragRef.current.getBoundingClientRect();
+          setElementPosition({ x: elementPos.x, y: elementPos.y });
+          setPosition({
+            x: Math.round(elementPosition.x),
+            y: Math.round(elementPosition.y),
+          });
+          if (this.hitTest(props.bin.current, "30%")) {
+            dragRef.current.style.display = "none";
+          }
+        },
+      });
+    }
+  }, [props.grid]);
   // ! for modal
   const [isOpen, setIsOpen] = useState(false);
   const [opacity, setOpacity] = useState(0);

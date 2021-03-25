@@ -13,11 +13,23 @@ $dot-space: 10px;
   grid-template-columns: 4fr 1fr;
   height: 100vh;
   overflow: hidden;
+  .toggle-background {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    width: max-content;
+    a {
+      font-size: 2.5rem;
+      font-weight: 500;
+      text-decoration: none;
+      color: #000;
+      padding: 0 2rem;
+    }
+  }
   .toggle-dark-mode {
     display: block;
-    width: 5rem;
-    margin-left: 2rem;
-    margin-top: 2rem;
+    width: 4rem;
+    margin: 1.5rem;
     cursor: pointer;
     text-shadow: 1px 4px 4px 4px white;
   }
@@ -54,6 +66,9 @@ $dot-space: 10px;
       $dot-color;
     background-size: $dot-space $dot-space;
     box-shadow: 5px 5px 10px inset rgba(0, 0, 0, 0.3);
+    &-no-grid {
+      background: $bg-color !important;
+    }
   }
   &__workspace--dark {
     transition: all 0.3s linear;
@@ -69,6 +84,9 @@ $dot-space: 10px;
       $dot-color-dark;
     background-size: $dot-space $dot-space;
     box-shadow: 5px 5px 10px inset rgba(0, 0, 0, 0.3);
+    &-no-grid {
+      background: $bg-color-dark !important;
+    }
   }
   &__sidebar {
     box-shadow: -5px 1px 10px rgba(0, 0, 0, 0.3);

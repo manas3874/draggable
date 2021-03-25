@@ -33,6 +33,7 @@ function DraggableImage(props) {
   // ! Ref for the draggable div
   const dragRef = useRef(null);
   const imageRef = useRef(null);
+  const checkboxRef = useRef(null);
   // ! State to change the bounds
   const [bound, setBound] = useState("body");
   // ! State to update the content
@@ -54,6 +55,8 @@ function DraggableImage(props) {
   const [wd, setWd] = useState("200px");
   const [htChange, setHtChange] = useState(false);
   const [wdChange, setWdChange] = useState(false);
+  const [aspect, setAspect] = useState(false);
+  const [ratio, setRatio] = useState(2);
   // ! initial render shift for textlabel
   const [firstSet, setFirstSet] = useState(true);
   // ! Show/hide inputbox
@@ -94,7 +97,6 @@ function DraggableImage(props) {
         });
         setShowInput(true);
         if (firstSet) {
-          console.log(firstSet);
           setFirstSet(false);
           shiftTag();
         }
@@ -120,7 +122,33 @@ function DraggableImage(props) {
         },
       },
     });
-  }, [bound, firstSet]);
+  }, [bound, firstSet, props.grid]);
+  useEffect(() => {
+    if (!props.grid) {
+      Draggable.create(dragRef.current, {
+        liveSnap: false,
+        onDragEnd: function () {
+          setBound(props.boundRef.current);
+          setImageClass("drag drag-image--dropped");
+          const elementPos = dragRef.current.getBoundingClientRect();
+          setElementPosition({ x: elementPos.x, y: elementPos.y });
+          setPosition({
+            x: Math.round(elementPosition.x),
+            y: Math.round(elementPosition.y),
+          });
+          setShowInput(true);
+          if (firstSet) {
+            console.log(firstSet);
+            setFirstSet(false);
+            shiftTag();
+          }
+          if (this.hitTest(props.bin.current, "30%")) {
+            dragRef.current.style.display = "none";
+          }
+        },
+      });
+    }
+  }, [props.grid]);
   // ! for modal
   const [isOpen, setIsOpen] = useState(false);
   const [opacity, setOpacity] = useState(0);
@@ -246,6 +274,7 @@ function DraggableImage(props) {
                     <input
                       type="text"
                       placeholder="height"
+                      disabled={checkboxRef?.current?.checked}
                       value={ht.replace("px", "")}
                       onChange={(ev) => {
                         setHt(`${ev.target.value}px`);
@@ -265,9 +294,33 @@ function DraggableImage(props) {
                       onChange={(ev) => {
                         setWd(`${ev.target.value}px`);
                         setWdChange(true);
+                        if (aspect) {
+                          console.log(aspect, ratio);
+                          setHt(`${ev.target.value / ratio}px`);
+                          setHtChange(true);
+                        }
                       }}
                       onKeyDown={(ev) => {
-                        if (ev.key === "Enter") modalSubmit("wd");
+                        if (ev.key === "Enter") {
+                          if (aspect) {
+                            modalSubmit("htwd");
+                          }
+                          modalSubmit("wd");
+                        }
+                      }}
+                    />
+                  </label>
+                  <label class="aspect-ratio-checkbox">
+                    Preserve aspect ratio
+                    <input
+                      ref={checkboxRef}
+                      type="checkbox"
+                      onChange={() => {
+                        if (checkboxRef.current.checked) {
+                          setAspect(true);
+                        } else {
+                          setAspect(false);
+                        }
                       }}
                     />
                   </label>
@@ -278,6 +331,15 @@ function DraggableImage(props) {
                 className="file-upload"
                 onChange={(ev) => {
                   setFile(URL.createObjectURL(ev.target.files[0]));
+                  var img = new Image();
+
+                  img.onload = function () {
+                    var height = img.height;
+                    var width = img.width;
+                    console.log(height, width);
+                    setRatio(width / height);
+                  };
+                  img.src = URL.createObjectURL(ev.target.files[0]);
                 }}
               />
               <div className="configuration-modal__btn-group">

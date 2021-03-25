@@ -94,4 +94,13 @@
       }
     }
   }
+  .aspect-ratio-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    input {
+      width: 2rem !important;
+      cursor: pointer;
+    }
+  }
 }

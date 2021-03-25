@@ -4,7 +4,9 @@ import DraggableInput from "../components/DraggableInput";
 import DraggableButton from "../components/DraggableButton";
 import DraggableImage from "../components/DraggableImage";
 import darkToggle from "../assets/dark-mode.svg";
+import gridIcon from "../assets/grid.svg";
 import trash from "../assets/trash.svg";
+import { Link } from "react-router-dom";
 // ! Provision for sliding sidebar (commented)
 // import { gsap } from "gsap";
 // import { Draggable } from "gsap/Draggable";
@@ -26,6 +28,8 @@ function Homepage() {
   const [workspaceClass, setWorkspaceClass] = useState(
     "homepage__workspace--light"
   );
+  // ! grid snap or no grid snap
+  const [grid, setGrid] = useState(true);
   // ! Generating the usable labels
   const setLabels = () => {
     var dummyArr = [];
@@ -36,6 +40,7 @@ function Homepage() {
           boundRef={workspaceRef}
           bounds={workspace}
           bin={binRef}
+          grid={grid}
         />
       );
     }
@@ -51,6 +56,7 @@ function Homepage() {
           boundRef={workspaceRef}
           bounds={workspace}
           bin={binRef}
+          grid={grid}
         />
       );
     }
@@ -66,6 +72,7 @@ function Homepage() {
           boundRef={workspaceRef}
           bounds={workspace}
           bin={binRef}
+          grid={grid}
         />
       );
     }
@@ -81,6 +88,7 @@ function Homepage() {
           boundRef={workspaceRef}
           bounds={workspace}
           bin={binRef}
+          grid={grid}
         />
       );
     }
@@ -108,22 +116,49 @@ function Homepage() {
     // setClose(closeFunc);
     // setOpen(openFunc);
   }, []);
+  const generateClassname = () => {
+    if (mode && grid) return "homepage__workspace--light";
+    if (!mode && grid) return "homepage__workspace--dark";
+    if (mode && !grid) return "homepage__workspace--light-no-grid";
+    if (!mode && !grid) return "homepage__workspace--dark-no-grid";
+  };
   return (
     <div className="homepage">
-      <div className={workspaceClass} ref={workspaceRef}>
-        <img
-          src={darkToggle}
-          className="toggle-dark-mode"
-          alt="toggle dark mode"
-          onClick={() => {
-            if (!mode) {
-              setWorkspaceClass("homepage__workspace--dark");
-            } else {
-              setWorkspaceClass("homepage__workspace--light");
-            }
-            setMode(!mode);
-          }}
-        />
+      <div className={generateClassname()} ref={workspaceRef}>
+        <div className="toggle-background">
+          <img
+            src={darkToggle}
+            className="toggle-dark-mode"
+            alt="toggle dark mode"
+            onClick={() => {
+              if (!mode) {
+                setWorkspaceClass("homepage__workspace--dark");
+              } else {
+                setWorkspaceClass("homepage__workspace--light");
+              }
+              setMode(!mode);
+            }}
+          />
+          <img
+            src={gridIcon}
+            className="toggle-dark-mode"
+            alt="toggle grid snap"
+            onClick={() => setGrid(!grid)}
+          />
+          <Link target="_blank" to="/documentation">
+            Documentation
+          </Link>
+        </div>
+        
+        {/* <ReactToPdf>
+          {({ toPdf, sidebarRef }) => (
+            <div
+              style={{ width: 500, height: 500, background: "red" }}
+              onClick={toPdf}
+              ref={sidebarRef}
+            />
+          )}
+        </ReactToPdf> */}
         <div className="bin" ref={binRef}>
           <img src={trash} alt="" />
         </div>
