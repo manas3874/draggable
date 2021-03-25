@@ -16,7 +16,7 @@ const FadingBackground = styled(BaseModalBackground)`
 
 const StyledModal = Modal.styled`
   width: 35rem;
-  height: 45rem;
+  height: 50rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -243,28 +243,34 @@ function DraggableButton(props) {
                   </label>
                 </div>
                 <div className="configuration-modal__styling">
-                  <input
-                    type="text"
-                    placeholder="Font size"
-                    value={fz.replace("px", "")}
-                    onChange={(ev) => {
-                      setFz(`${ev.target.value}px`);
-                    }}
-                    onKeyDown={(ev) => {
-                      if (ev.key === "Enter") modalSubmit();
-                    }}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Font weight"
-                    value={fw.replace("px", "")}
-                    onChange={(ev) => {
-                      setFw(ev.target.value);
-                    }}
-                    onKeyDown={(ev) => {
-                      if (ev.key === "Enter") modalSubmit();
-                    }}
-                  />
+                  <label htmlFor="">
+                    Font size
+                    <input
+                      type="text"
+                      placeholder="Font size"
+                      value={fz.replace("px", "")}
+                      onChange={(ev) => {
+                        setFz(`${ev.target.value}px`);
+                      }}
+                      onKeyDown={(ev) => {
+                        if (ev.key === "Enter") modalSubmit();
+                      }}
+                    />
+                  </label>
+                  <label htmlFor="">
+                    Font weight
+                    <input
+                      type="text"
+                      placeholder="Font weight"
+                      value={fw.replace("px", "")}
+                      onChange={(ev) => {
+                        setFw(ev.target.value);
+                      }}
+                      onKeyDown={(ev) => {
+                        if (ev.key === "Enter") modalSubmit();
+                      }}
+                    />
+                  </label>
                 </div>
                 <div className="configuration-modal__bg">
                   <input

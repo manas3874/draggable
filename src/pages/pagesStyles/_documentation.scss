@@ -70,14 +70,18 @@
     padding: 5rem 0;
     display: flex;
     flex-direction: column;
+    h1 {
+      font-size: 3rem;
+      margin: 1rem 0 2rem 0;
+    }
     > h1 {
       font-size: 4rem;
       text-align: center;
     }
-   
-    > ul {
+
+    > ol {
       li {
-        margin: 2rem 0;
+        margin: 1.5rem 0;
         p {
           font-size: 20px;
           line-height: 30px;
@@ -99,6 +103,12 @@
             padding: 0.2rem 1rem;
             margin: 0 0.5rem;
           }
+        }
+      }
+      > li {
+        margin: 4rem 0;
+        &::marker {
+          font-size: 3rem;
         }
       }
     }
