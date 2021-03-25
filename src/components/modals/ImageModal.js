@@ -25,9 +25,10 @@ function ImageModal({
   setRatio,
   htChange,
   wdChange,
+  isOpen,
+  setIsOpen,
 }) {
   // ! for modal
-  const [isOpen, setIsOpen] = useState(false);
   const [opacity, setOpacity] = useState(0);
 
   function toggleModal(e) {

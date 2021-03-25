@@ -183,6 +183,8 @@ function DraggableImage(props) {
         setRatio={setRatio}
         htChange={htChange}
         wdChange={wdChange}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
       />
     </div>
   );

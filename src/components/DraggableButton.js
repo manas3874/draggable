@@ -124,6 +124,7 @@ function DraggableButton(props) {
   function toggleModal(e) {
     setOpacity(0);
     setIsOpen(!isOpen);
+    console.log(isOpen);
   }
 
   function modalSubmit() {
@@ -166,6 +167,8 @@ function DraggableButton(props) {
         fw={fw}
         setFw={setFw}
         buttonRef={buttonRef}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
       />
     </div>
   );

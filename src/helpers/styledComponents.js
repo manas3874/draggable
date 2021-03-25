@@ -12,7 +12,7 @@ const FadingBackground = styled(BaseModalBackground)`
 
 const StyledModal = Modal.styled`
   width: 35rem;
-  height: 55rem;
+  height: 65rem;
   display: flex;
   align-items: center;
   justify-content: center;

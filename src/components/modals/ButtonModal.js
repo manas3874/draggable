@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ModalProvider } from "styled-react-modal";
 import { FadingBackground, StyledModal } from "../../helpers/styledComponents";
 //   ! All the props, states, etc are managed in the draggable component, then passed as a prop to this modal.
@@ -15,9 +15,10 @@ function ButtonModal({
   fw,
   setFw,
   buttonRef,
+  isOpen,
+  setIsOpen,
 }) {
   // ! for modal
-  const [isOpen, setIsOpen] = useState(false);
   const [opacity, setOpacity] = useState(0);
 
   function toggleModal(e) {

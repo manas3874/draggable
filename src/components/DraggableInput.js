@@ -177,6 +177,8 @@ function DraggableInput(props) {
         setHt={setHt}
         wd={wd}
         setWd={setWd}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
       />
     </div>
   );

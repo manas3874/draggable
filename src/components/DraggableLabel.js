@@ -140,6 +140,8 @@ function DraggableLabel(props) {
         fw={fw}
         setFw={setFw}
         labelRef={labelRef}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
       />
     </div>
   );
