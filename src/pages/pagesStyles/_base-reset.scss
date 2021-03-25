@@ -3,6 +3,14 @@
 *::before {
   box-sizing: border-box;
 }
+// ! changing the text selection color
+::-moz-selection {
+  background-color: rgba(18, 197, 182, 0.5);
+}
+
+::selection {
+  background-color: rgba(18, 197, 182, 0.5);
+}
 html {
   font-size: 10px;
   // scroll-behavior: smooth;

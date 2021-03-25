@@ -469,6 +469,14 @@ function Documentation() {
             </p>
           </li>
           <li>
+            <h1>Unlimited workspace.</h1>
+            <p>
+              Workspace right now is limited to full height and 80% of the
+              screen width. A scrollable and zoomable, unlimited or seemingly
+              unlimited workspace can be made to accomodate enough content.
+            </p>
+          </li>
+          <li>
             <h1>Variable grid-size.</h1>
             <p>
               The grid size can be varied depending on what level of snapping we
@@ -492,11 +500,26 @@ function Documentation() {
             </p>
           </li>
           <li>
+            <h1>Color picker for changing colors.</h1>
+            <p>
+              Colors available right now are limited. A color-picker can be
+              integrated in the configuration-modals so that the user can switch
+              colors as desired.
+            </p>
+          </li>
+          <li>
             <h1>Pick and drag to resize the image.</h1>
             <p>
               The images can be resized using the corner pick-points like in
               designing softwares or MS Word. This will help the user view the
               changes in real time, and get to a desired image size.
+            </p>
+          </li>
+          <li>
+            <h1>Save the design to PDF or print it.</h1>
+            <p>
+              Once designed. the layout can be saved/ printed as desired. This
+              will help brainstorming after a basic design completion.
             </p>
           </li>
         </ol>
@@ -705,9 +728,9 @@ function Documentation() {
       </footer>
       {/* Contact section */}
       <section className="section-split contact-me" ref={contactMeRef}>
-        <h1>Liked what you saw? Let's talk!</h1>
+        <h1>Liked what you saw? Let's connect!</h1>
         <p>
-          Connect via email at{" "}
+          Email me at{" "}
           <code>
             <a href="mailto:tripathimanas98@gmail.com">
               tripathimanas98@gmail.com
