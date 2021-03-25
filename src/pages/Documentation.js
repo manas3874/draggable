@@ -4,8 +4,8 @@ import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
 // ! images imports
-import banner1 from "../assets/homepage-dark-grid.PNG";
-import banner2 from "../assets/homepage-light-no-grid.PNG";
+import banner1 from "../assets/homepage-dark-grid.jpg";
+import banner2 from "../assets/homepage-light-no-grid.jpg";
 import link from "../assets/link.svg";
 import linkGrey from "../assets/link-grey.svg";
 import homepageBlank from "../assets/homepage-blank.PNG";
